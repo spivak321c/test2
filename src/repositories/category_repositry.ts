@@ -1,7 +1,12 @@
 // Category queries using Drizzle
-import { db } from '../config/database';
-import { categories } from '../models/category';
-import { eq } from 'drizzle-orm';
+import { db } from "../config/database";
+import { categories } from "../models/category";
+import { eq } from "drizzle-orm";
+interface CategoryData {
+  id: string;
+  name: string;
+  parentId?: string;
+}
 
 // Get all categories
 export const getAllCategories = async () => {
@@ -9,13 +14,22 @@ export const getAllCategories = async () => {
 };
 
 // Create category
-export const createCategory = async (data: any) => {
+interface CategoryData {
+  id: string;
+  name: string;
+  parentId?: string;
+}
+export const createCategory = async (data: CategoryData) => {
   return db.insert(categories).values(data).returning();
 };
 
 // Update category
 export const updateCategory = async (id: string, data: any) => {
-  return db.update(categories).set(data).where(eq(categories.id, id)).returning();
+  return db
+    .update(categories)
+    .set(data)
+    .where(eq(categories.id, id))
+    .returning();
 };
 
 // Delete category

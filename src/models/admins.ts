@@ -1,0 +1,27 @@
+import {
+  pgTable,
+  varchar,
+  text,
+  timestamp,
+  decimal,
+  jsonb,
+} from "drizzle-orm/pg-core";
+
+export const admins = pgTable("admins", {
+  id: varchar("id").primaryKey(),
+  username: text("username").notNull().unique(),
+  password: text("password").notNull(),
+  role: text("role").notNull().default("customer"),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const adminLogs = pgTable("admin_logs", {
+  id: varchar("id").primaryKey(),
+  adminId: varchar("admin_id").notNull(),
+  action: text("action").notNull(),
+  targetType: text("target_type").notNull(),
+  targetId: varchar("target_id").notNull(),
+  details: jsonb("details"),
+  timestamp: timestamp("timestamp").defaultNow(),
+});

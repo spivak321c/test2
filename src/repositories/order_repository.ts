@@ -1,7 +1,7 @@
 // Order queries using Drizzle
-import { db } from '../config/database';
-import { orders, products } from '../models/order';
-import { eq } from 'drizzle-orm';
+import { db } from "../config/database";
+import { orders, products } from "../models/order";
+import { eq, and, inArray } from "drizzle-orm";
 
 // Get order by ID
 export const getOrderById = async (id: string) => {
@@ -20,5 +20,27 @@ export const getProductById = async (id: string) => {
 
 // Update product stock
 export const updateProductStock = async (id: string, stock: number) => {
-  return db.update(products).set({ stock }).where(eq(products.id, id)).returning();
+  return db
+    .update(products)
+    .set({ stock })
+    .where(eq(products.id, id))
+    .returning();
+};
+
+//getUnsettledOrders
+export const getUnsettledOrders = async (merchantId: string) => {
+  return db
+    .select()
+    .from(orders)
+    .where(
+      and(eq(orders.merchantId, merchantId), eq(orders.status, "delivered"))
+    );
+};
+
+export const markOrdersSettled = async (orderIds: string[]) => {
+  return db
+    .update(orders)
+    .set({ status: "settled" })
+    .where(inArray(orders.id, orderIds))
+    .returning();
 };

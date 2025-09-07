@@ -1,7 +1,9 @@
 // Merchant queries using Drizzle
-import { db } from '../config/database';
-import { merchantApplications, merchants, users, adminLogs } from '../models/merchant';
-import { eq } from 'drizzle-orm';
+import { db } from "../config/database";
+import { merchantApplications, merchants } from "../models/merchant";
+import { users } from "../models/users";
+import { eq } from "drizzle-orm";
+import { adminLogs } from "../models/admins";
 
 // Get all applications
 export const getAllApplications = async () => {
@@ -10,17 +12,28 @@ export const getAllApplications = async () => {
 
 // Get pending applications
 export const getPendingApplications = async () => {
-  return db.select().from(merchantApplications).where(eq(merchantApplications.status, 'pending'));
+  return db
+    .select()
+    .from(merchantApplications)
+    .where(eq(merchantApplications.status, "pending"));
 };
 
 // Get application by ID
 export const getApplicationById = async (id: string) => {
-  return db.select().from(merchantApplications).where(eq(merchantApplications.id, id)).limit(1);
+  return db
+    .select()
+    .from(merchantApplications)
+    .where(eq(merchantApplications.id, id))
+    .limit(1);
 };
 
 // Update application
 export const updateApplication = async (id: string, data: any) => {
-  return db.update(merchantApplications).set(data).where(eq(merchantApplications.id, id)).returning();
+  return db
+    .update(merchantApplications)
+    .set(data)
+    .where(eq(merchantApplications.id, id))
+    .returning();
 };
 
 // Create user

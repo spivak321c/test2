@@ -85,7 +85,7 @@ export const updateCommissionTier = async (id: string, tier: string, adminId: st
   await repo.createAdminLog({ adminId, action: 'UPDATE_COMMISSION', targetType: 'merchant', targetId: id, details: { tier } });
   return updated;
 };
-
+/*
 // Create application (merchant submits)
 export const createApplication = async (data: any) => {
   const application = await repo.createApplication({ ...data, id: uuid(), submittedAt: new Date() });
@@ -93,3 +93,4 @@ export const createApplication = async (data: any) => {
   mockEmailService.notifyAdminNewApplication(application.storeName, application.personalEmail);
   return application;
 };
+*/
