@@ -17,6 +17,7 @@ export const runPayout = async (adminId?: string) => {
   const merchants = await merchantRepo.getAllMerchants();
 
   const results = [];
+  try()
   for (const merchant of merchants) {
     // Aggregate unsettled orders (delivered, not paid out)
     const orders = await orderRepo.getUnsettledOrders(merchant.id); // Assume method added
