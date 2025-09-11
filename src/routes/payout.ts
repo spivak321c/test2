@@ -1,4 +1,5 @@
 // Payout routes
+/*
 import { Router } from 'express';
 import * as controller from '../controllers/payout';
 
@@ -8,3 +9,4 @@ router.get('/:merchantId', controller.getMerchantPayouts);
 router.post('/trigger', controller.triggerPayout);
 
 export default router;
+*/

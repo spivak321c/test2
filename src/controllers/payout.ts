@@ -1,4 +1,5 @@
 // Controllers for payout run management
+/*
 import { Request, Response } from 'express';
 import * as payoutService from '../services/payout_service';
 
@@ -22,3 +23,4 @@ export const triggerPayout = async (req: Request, res: Response) => {
   const results = await payoutService.runPayout(req.user.id);
   res.json(results);
 };
+*/

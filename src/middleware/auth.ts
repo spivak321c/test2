@@ -1,8 +1,8 @@
 // Authentication middleware with MFA for admins
-import { Request, Response, NextFunction } from "express";
-import { db } from "../config/database";
-import { users } from "../models/merchant"; // Assuming users in merchant schema
-
+// import { Request, Response, NextFunction } from "express";
+// import { db } from "../config/database";
+// import { users } from "../models/merchant"; // Assuming users in merchant schema
+/*
 export const requireAdmin = async (
   req: Request,
   res: Response,
@@ -30,4 +30,86 @@ export const requireAdmin = async (
 
   req.user = admin;
   next();
+};
+*/
+
+// Authentication middleware with JWT for admins
+/*
+import { Request, Response, NextFunction } from "express";
+import jwt from 'jsonwebtoken';
+import { db } from "../config/database";
+import { admins } from "../models/admins";
+import { eq } from 'drizzle-orm';
+
+export const requireAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // Extract authorization header
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  // Validate JWT
+  const token = authHeader.substring(7);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as { id: string, role: string };
+    
+    // Fetch admin user
+    const admin = await db.query.admins.findFirst({
+      where: eq(admins.id, decoded.id),
+    });
+    if (!admin || admin.role !== "admin") {
+      return res.status(403).json({ message: "Admin access required" });
+    }
+
+    req.user = admin;
+    next();
+  } catch (error) {
+    console.log('Invalid token: ' + (error as Error).message, 'error');
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
+*/
+
+// Authentication middleware with JWT for admins
+
+import { Request, Response, NextFunction } from "express";  // This should now resolve
+import jwt from 'jsonwebtoken';
+import { db } from "../config/database";
+import { admins } from "../models/admins";
+import { eq } from 'drizzle-orm';
+
+export const requireAdmin = async (
+  req: Request,  // No generics needed here since headers is now augmented
+  res: Response,
+  next: NextFunction
+) => {
+  // Extract authorization header
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  // Validate JWT
+  const token = authHeader.substring(7);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as { id: string, role: string };
+    
+    // Fetch admin user
+    const admin = await db.query.admins.findFirst({
+      where: eq(admins.id, decoded.id),
+    });
+    if (!admin || admin.role !== "admin") {
+      return res.status(403).json({ message: "Admin access required" });
+    }
+
+    req.user = admin;
+    next();
+  } catch (error) {
+    console.log('Invalid token: ' + (error as Error).message, 'error');
+    return res.status(401).json({ message: "Invalid token" });
+  }
 };

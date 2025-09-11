@@ -1,4 +1,5 @@
 // Dispute logic
+/*
 import * as repo from '../repositories/dispute_repository';
 import * as orderRepo from '../repositories/order_repository';
 import { createAdminLog } from '../repositories/merchant_repository';
@@ -69,3 +70,4 @@ export const approveRefund = async (id: string, approverId: string, isMerchant =
 
   return { dispute: updatedDispute, order };
 };
+*/

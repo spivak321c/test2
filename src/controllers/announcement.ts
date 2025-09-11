@@ -1,4 +1,5 @@
 // Controllers for site-wide announcements
+/*
 import { Request, Response } from 'express';
 import * as announcementService from '../services/announcement_service';
 
@@ -22,3 +23,4 @@ export const deleteAnnouncement = async (req: Request, res: Response) => {
   await announcementService.deleteAnnouncement(req.params.id);
   res.status(204).send();
 };
+*/

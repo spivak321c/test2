@@ -11,7 +11,7 @@ export const admins = pgTable("admins", {
   id: varchar("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
-  role: text("role").notNull().default("customer"),
+  role: text("role").notNull().default("admin"),
   email: text("email").notNull().unique(),
   createdAt: timestamp("created_at").defaultNow(),
 });

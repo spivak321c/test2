@@ -1,4 +1,5 @@
 // Payout logic
+/*
 import * as repo from '../repositories/payout_repository';
 import * as merchantRepo from '../repositories/merchant_repository';
 import * as orderRepo from '../repositories/order_repository';
@@ -50,3 +51,4 @@ export const runPayout = async (adminId?: string) => {
 
   return results;
 };
+*/

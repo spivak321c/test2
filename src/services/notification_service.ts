@@ -1,4 +1,5 @@
 // Notification handling
+/*
 import { mockEmailService } from '../utils/email';
 
 // Send notification (email/SMS)
@@ -12,3 +13,4 @@ export const sendNotification = async (type: string, data: any) => {
       throw new Error('Unknown notification type');
   }
 };
+*/
