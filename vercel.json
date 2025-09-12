@@ -1,15 +1,15 @@
 {
-"version": 2,
-"functions": {
-"api/**": {
-"runtime": "@vercel/node@3.0.0"
-}
-},
-"rewrites": [
-{
-"source": "/(.*)",
-"destination": "/api/index.ts"
-}
-],
-"installCommand": "npm install && npm run db:generate && npm run db:migrate && npm run seed"
+  "version": 2,
+  "functions": {
+    "api/**": {
+      "runtime": "@vercel/node@3.0.0"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.ts"
+    }
+  ],
+  "installCommand": "npm install && npm run db:generate && npm run db:migrate && npm run seed"
 }
