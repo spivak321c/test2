@@ -12,7 +12,7 @@
     "seed": "tsx src/seed.ts"
   },
  "engines": {
-    "node": "22.x"
+    "node": "18.x"
   },
   "ts-node": {
     "esm": true,
