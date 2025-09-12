@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "functions": {
-    "api/**": {
-      "runtime": "@vercel/node@5.3.22"
-
-    }
-  },
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/api/index.ts"
+      "src": "dist/index.js",
+      "use": "@vercel/node"
     }
   ],
-  "installCommand": "npm install && npm run db:generate && npm run db:migrate && npm run seed"
-  
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/index.js"
+    }
+  ],
+  "buildCommand": "npm run build && npx drizzle-kit generate && npx drizzle-kit migrate && npx tsx src/seed.ts",
+  "outputDirectory": "dist"
 }
