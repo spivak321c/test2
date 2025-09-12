@@ -11,7 +11,9 @@
     "db:push": "drizzle-kit push",
     "seed": "tsx src/seed.ts"
   },
-   
+ "engines": {
+    "node": "22.x"
+  },
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
