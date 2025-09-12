@@ -11,5 +11,6 @@
       "destination": "/api/index.ts"
     }
   ],
-  "installCommand": "npm install && npm run db:generate && npm run db:migrate && npm run seed"
+  "installCommand": "npm install && npm run db:generate && npm run db:migrate && npm run seed",
+  "nodeVersion": "20.x"
 }
