@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "buildCommand": "npm run build && npx drizzle-kit generate && npx drizzle-kit migrate && npx tsx src/seed.ts  "  
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.ts"
+    }
+  ],
+  "functions": {
+    "src/index.ts": {
+      "runtime": "nodejs22.x" 
+    }
+  }
+}

@@ -1,11 +1,22 @@
 // Category routes
 import { Router } from 'express';
-import * as controller from '../controllers/category';
+import {
+  createCategory,
+  getCategoryById,
+  getAllCategories,
+  getCategoryTree,
+  updateCategory,
+  deleteCategory,
+  addAttribute,
+} from '../controllers/category';
 
 const router = Router();
-router.get('/', controller.getCategories);
-router.post('/', controller.createCategory);
-router.put('/:id', controller.updateCategory);
-router.delete('/:id', controller.deleteCategory);
+router.post('/', createCategory);
+router.get('/', getAllCategories);
+router.get('/tree', getCategoryTree); // Special endpoint for hierarchy
+router.get('/:id', getCategoryById);
+router.put('/:id', updateCategory);
+router.delete('/:id', deleteCategory);
+router.patch('/:id/attributes', addAttribute);
 
 export default router;

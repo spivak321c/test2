@@ -5,10 +5,13 @@ import {
   timestamp,
   decimal,
   jsonb,
+   uuid,
 } from "drizzle-orm/pg-core";
 
+
 export const admins = pgTable("admins", {
-  id: varchar("id").primaryKey(),
+  //id: varchar("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   role: text("role").notNull().default("admin"),

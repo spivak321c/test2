@@ -35,6 +35,9 @@
 //   console.log(`Server on port ${config.port}`);
 // });
 
+
+
+/*
 import { config } from 'dotenv';
 config(); // Load .env first
 
@@ -55,3 +58,38 @@ registerRoutes(app);
 app.listen(appConfig.port, () => {
   console.log(`Server on port ${appConfig.port}`);
 });
+*/
+
+
+
+
+
+
+
+
+
+
+
+import "dotenv/config";  // <-- loads .env before any other module
+
+
+import express from "express"
+//import cors from "cors"
+import { registerRoutes } from "./routes/index"
+import { loggingMiddleware } from "./middleware/logging"
+import { config as appConfig } from "./config/index"
+
+const app = express()
+
+//app.use(cors())
+app.use(express.json())
+//app.use(express.raw({ type: "application/webhook+json" }))
+app.use(loggingMiddleware)
+
+registerRoutes(app)
+export default app;
+
+const port = appConfig.port
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})

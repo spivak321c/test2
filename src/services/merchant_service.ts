@@ -109,6 +109,9 @@ import { merchantApplication } from "../models/merchant_applications";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { MerchantInsert, MerchantApplicationUpdate, MerchantUpdate } from "../repositories/merchant_repository";
+//import { adminLogs } from "../models/admins";
+import { validate as uuidValidate } from 'uuid';
+import { admins } from "../models/admins";
 
 // Get all applications
 export const getAllApplications = async () => repo.getAllApplications();
@@ -117,7 +120,17 @@ export const getAllApplications = async () => repo.getAllApplications();
 export const getPendingApplications = async () => repo.getPendingApplications();
 
 // Approve application
+
+
 export const approveApplication = async (id: string, adminId: string) => {
+  if (!uuidValidate(adminId)) {
+    throw new Error('Invalid adminId: Must be a valid UUID');
+  }
+
+  const [admin] = await db.select().from(admins).where(eq(admins.id, adminId)).limit(1);
+    if (!admin) {
+      throw new Error(`Admin with ID ${adminId} does not exist`);
+    }
   return await db.transaction(async (tx) => {
     const [application] = await tx
       .select()
@@ -126,11 +139,11 @@ export const approveApplication = async (id: string, adminId: string) => {
 
     if (!application || application.status !== "pending") throw new Error("Already processed");
 
-    const stripeAccount = await stripe.accounts.create({
-      type: "express",
-      email: application.workEmail,
-      business_type: "individual",
-    });
+    // const stripeAccount = await stripe.accounts.create({
+    //   type: "express",
+    //   email: application.workEmail,
+    //   business_type: "individual",
+    // });
 
     const merchantId = uuid();
     const tempPassword = uuid().slice(0, 8);
@@ -153,7 +166,8 @@ export const approveApplication = async (id: string, adminId: string) => {
       businessRegistrationCertificate: application.businessRegistrationCertificate,
       storeLogoUrl: application.storeLogoUrl,
       password: await bcrypt.hash(tempPassword, 10),
-      stripeAccountId: stripeAccount.id,
+      //stripeAccountId: stripeAccount.id,
+      accountId: 'test-seeded-account-' + uuid(),
       status: "active",
       commissionTier: "standard",
       commissionRate: "5.00",
@@ -182,12 +196,12 @@ export const approveApplication = async (id: string, adminId: string) => {
       .returning();
 
     // Log action
-    await tx.insert(repo.adminLogs).values({
-      adminId,
-      action: "APPROVE_APPLICATION",
-      targetType: "application",
-      targetId: id,
-    });
+    // await tx.insert(repo.adminLogs).values({
+    //   adminId,
+    //   action: "APPROVE_APPLICATION",
+    //   targetType: "application",
+    //   targetId: id,
+    // });
 
     // Send email
     await sendApprovalEmail(application.workEmail, application.storeName, tempPassword);
@@ -195,6 +209,12 @@ export const approveApplication = async (id: string, adminId: string) => {
     return { application: updatedApp, merchant };
   });
 };
+
+
+
+
+
+
 
 // Reject application
 export const rejectApplication = async (id: string, reason: string, adminId: string) => {
