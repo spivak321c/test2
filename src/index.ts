@@ -78,11 +78,14 @@ import express from "express"
 import { registerRoutes } from "./routes/index"
 import { loggingMiddleware } from "./middleware/logging"
 import { config as appConfig } from "./config/index"
+import swaggerUi from 'swagger-ui-express';
+import { specs } from './docs/swagger';
 
 const app = express()
 
 //app.use(cors())
 app.use(express.json())
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.use(express.raw({ type: "application/webhook+json" }))
 app.use(loggingMiddleware)
 

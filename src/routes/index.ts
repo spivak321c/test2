@@ -45,6 +45,7 @@ export function registerRoutes(app: Express) {  // Removed 'async' (no awaits in
 }
 */
 import type { Express } from "express"
+import adminRoutes from './admin';
 import categoryRoutes from "./category.js"
 import merchantRoutes from "./merchants.js"
 import settingsRoutes from "./settings.js"
@@ -57,7 +58,7 @@ export function registerRoutes(app: Express) {
   app.use(loggingMiddleware)
 
   //app.use("/api/auth", authRoutes)
-
+  app.use('/admin', adminRoutes);
   app.use("/api/admin/categories",  categoryRoutes)
   app.use("/api/admin/merchants",  merchantRoutes)
   app.use("/api/admin/settings", requireAdmin, settingsRoutes)
