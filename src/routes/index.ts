@@ -59,8 +59,8 @@ export function registerRoutes(app: Express) {
 
   //app.use("/api/auth", authRoutes)
   app.use('/admin', adminRoutes);
-  app.use("/api/admin/categories",  categoryRoutes)
-  app.use("/api/admin/merchants",  merchantRoutes)
+  app.use("/api/admin/categories", requireAdmin, categoryRoutes)
+  app.use("/api/admin/merchants", requireAdmin, merchantRoutes)
   app.use("/api/admin/settings", requireAdmin, settingsRoutes)
 
   app.post("/api/webhooks/stripe", stripeWebhook)
@@ -103,9 +103,9 @@ export function registerRoutes(app: Express) {
           "GET /api/admin/settings": "Get settings",
           "PUT /api/admin/settings": "Update settings",
         },
-        webhooks: {
-          "POST /api/webhooks/stripe": "Stripe webhook handler",
-        },
+        // webhooks: {
+        //   "POST /api/webhooks/stripe": "Stripe webhook handler",
+        // },
       },
     })
   })
