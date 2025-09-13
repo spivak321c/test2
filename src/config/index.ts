@@ -34,7 +34,7 @@
 
 
 
-
+/*
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -67,3 +67,34 @@ export const config = {
     secure: process.env.SMTP_SECURE === "true",
   },
 }
+*/
+
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const requiredEnv = ["DATABASE_URL", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "SMTP_FROM", "JWT_SECRET"];
+
+for (const env of requiredEnv) {
+  if (!process.env[env]) {
+    throw new Error(`Missing environment variable: ${env}`);
+  }
+}
+
+export const config = {
+  env: process.env.NODE_ENV || "development",
+  port: Number.parseInt(process.env.PORT || "5000"),
+  jwt: {
+    secret: process.env.JWT_SECRET as string, // Explicitly type as string
+    expiresIn: "24h" as const, // Use 'as const' for literal type
+  },
+  smtp: {
+    host: process.env.SMTP_HOST as string,
+    port: Number.parseInt(process.env.SMTP_PORT!),
+    user: process.env.SMTP_USER as string,
+    pass: process.env.SMTP_PASS as string,
+    from: process.env.SMTP_FROM as string,
+    secure: process.env.SMTP_SECURE === "true",
+  },
+};

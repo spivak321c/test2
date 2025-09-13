@@ -4,6 +4,7 @@ import { db } from '../config/database';
 import { admins } from '../models/admins';
 import { eq } from 'drizzle-orm';
 import { config } from '../config/index';
+import { SignOptions } from 'jsonwebtoken';
 
 interface AdminLoginPayload {
   id: string;
@@ -32,7 +33,8 @@ export const adminLogin = async (email: string, password: string) => {
     email: admin.email,
     username: admin.username,
   };
-  const token = jwt.sign(payload, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
+  const options: SignOptions = { expiresIn: config.jwt.expiresIn };
+  const token = jwt.sign(payload, config.jwt.secret as string, options);
 
   return {
     token,
