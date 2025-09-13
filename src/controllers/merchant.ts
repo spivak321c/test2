@@ -24,7 +24,7 @@ export const approveApplication = async (req: Request, res: Response) => {
   try {
     if (!req.user?.id) {
       //return res.status(400).json({ error: "Unauthorized: No user data found" })
-       const testAdminId = "108eea47-fea1-4b28-8d2e-e418edf80053" // Generate valid UUID
+       const testAdminId = "ff710920-dc5b-4588-8f6e-578406707a55" // Generate valid UUID
       req.user = { id: testAdminId, role: "admin", email: "admin@mail.com", username: "admin" };
     }
     const { application, merchant } = await merchantService.approveApplication(req.params.id, req.user.id)
