@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   varchar,
@@ -5,13 +6,24 @@ import {
   timestamp,
   decimal,
   jsonb,
+  uuid,
 } from "drizzle-orm/pg-core";
+import { carts } from "./cart";
+import { orders } from "./order";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
-  role: text("role").notNull().default("customer"),
-  email: text("email").notNull().unique(),
-  createdAt: timestamp("created_at").defaultNow(),
+// Update existing users table definition
+export const users = pgTable('users', {
+  id: uuid('id').defaultRandom().primaryKey(), // Change to uuid if not already
+  email: varchar('email').unique().notNull(),
+  name: varchar('name', { length: 100 }).notNull(),
+  password: varchar('password'), // Can be null for OAuth
+  googleId: varchar('google_id'),
+  country: varchar('country', { length: 100 }),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 });
+
+// export const userRelations = relations(users, ({ many }) => ({
+//   carts: many(carts),
+//   orders: many(orders),
+// }));

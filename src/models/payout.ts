@@ -9,3 +9,12 @@ export const payouts = pgTable('payouts', {
   transferId: text('transfer_id'), // Stripe transfer ID
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+
+// Add relation
+// export const payoutRelations = relations(payouts, ({ one }) => ({
+//   merchant: one(merchants, {
+//     fields: [payouts.merchantId],
+//     references: [merchants.id],
+//   }),
+// }));

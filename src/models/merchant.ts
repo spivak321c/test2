@@ -61,3 +61,12 @@ export const merchantsRelations = relations(merchants, ({ one }) => ({
 }));
 
 
+// Add to merchantsRelations
+// export const merchantsRelations = relations(merchants, ({ many }) => ({
+//   products: many(products),
+//   cartItems: many(cartItems),
+//   orderItems: many(orderItems),
+//   payouts: many(payouts),
+//   promotions: many(promotions),
+// }));
+
