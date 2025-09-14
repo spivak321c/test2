@@ -1,9 +1,10 @@
 // Order queries using Drizzle
 import { db } from "../config/database";
-import { orders, products } from "../models/order";
+//import { orders, products } from "../models/order";
 import { eq, and, inArray } from "drizzle-orm";
 
 // Get order by ID
+/*
 export const getOrderById = async (id: string) => {
   return db.select().from(orders).where(eq(orders.id, id)).limit(1);
 };
@@ -44,3 +45,4 @@ export const markOrdersSettled = async (orderIds: string[]) => {
     .where(inArray(orders.id, orderIds))
     .returning();
 };
+*/
