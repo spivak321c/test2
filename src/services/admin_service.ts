@@ -17,13 +17,13 @@ export const adminLogin = async (email: string, password: string) => {
   // Fetch admin by email
   const [admin] = await db.select().from(admins).where(eq(admins.email, email));
   if (!admin) {
-    throw new Error('Invalid email or password');
+    throw new Error('Invalid email ');
   }
 
   // Validate password
   const isValidPassword = await bcrypt.compare(password, admin.password);
   if (!isValidPassword) {
-    throw new Error('Invalid email or password');
+    throw new Error('Invalid password');
   }
 
   // Generate JWT

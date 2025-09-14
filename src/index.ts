@@ -80,6 +80,11 @@ import { loggingMiddleware } from "./middleware/logging"
 import { config as appConfig } from "./config/index"
 import swaggerUi from 'swagger-ui-express';
 import { specs } from './docs/swagger';
+// import AdminJS from 'adminjs';
+// import AdminJSExpress from '@adminjs/express';
+// import { admins } from "./models/admins";
+// import { categories } from "./models/category";
+// import { merchants } from "./models/merchant";
 
 const app = express()
 
@@ -88,9 +93,24 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.use(express.raw({ type: "application/webhook+json" }))
 app.use(loggingMiddleware)
+import { adminRouter } from './admin/admin';  // New import
+
+
+app.use('/admin', adminRouter);
+
+// TEST ENDPOINT: Add this temporarily to confirm Express routing works
+app.get('/test-admin', (req, res) => res.json({ message: 'Admin route base is working!' }));
 
 registerRoutes(app)
 export default app;
+
+// const adminJs = new AdminJS({
+//   resources: [merchants, admins, categories ],
+//   rootPath: '/admin',
+// });
+// const router = AdminJSExpress.buildRouter(adminJs);
+// app.use(adminJs.options.rootPath, router);
+
 
 const port = appConfig.port
 app.listen(port, () => {

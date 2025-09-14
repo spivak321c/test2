@@ -10,7 +10,10 @@ import { admins } from './models/admins';
 //   throw new Error('DATABASE_URL is not set');
 // }
 
-const DATABASE_URL="postgresql://neondb_owner:npg_VlAEowN2S6UT@ep-quiet-darkness-adb75ds6-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+//const DATABASE_URL="postgresql://neondb_owner:npg_VlAEowN2S6UT@ep-quiet-darkness-adb75ds6-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+const DATABASE_URL="postgresql://neondb_owner:npg_CcwoeLb6V1XH@ep-wild-haze-adu0bdvq-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
 
 const pool = new Pool({ connectionString: DATABASE_URL });
 const db = drizzle(pool);
@@ -82,10 +85,10 @@ console.log('Seeding admins...');
 const adminPassword = await bcrypt.hash('adminpass', 10);
 await db.insert(admins).values({
   id: uuid(), // Generates UUID
-  username: 'admin',
+  username: 'adminrt',
   password: adminPassword,
   role: 'admin',
-  email: 'admin@mail.com',
+  email: 'admin1@mail.com',
   createdAt: new Date(),
 });
 

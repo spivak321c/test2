@@ -58,7 +58,7 @@ export function registerRoutes(app: Express) {
   app.use(loggingMiddleware)
 
   //app.use("/api/auth", authRoutes)
-  app.use('/admin', adminRoutes);
+  app.use('/adminv', adminRoutes);
   app.use("/api/admin/categories", requireAdmin, categoryRoutes)
   app.use("/api/admin/merchants", requireAdmin, merchantRoutes)
   app.use("/api/admin/settings", requireAdmin, settingsRoutes)

@@ -6,7 +6,6 @@
     "module": "esnext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "express"],
     "typeRoots": ["./node_modules/@types", "./types"],
     "outDir": "./dist",
     "rootDir": "./src",

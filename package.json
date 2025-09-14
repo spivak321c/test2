@@ -19,8 +19,11 @@
     "experimentalSpecifierResolution": "node"
   },
   "dependencies": {
+    "@adminjs/express": "^6.1.1",
     "@neondatabase/serverless": "^0.10.4",
     "@vercel/node": "^5.3.22",
+    "adminjs": "^7.8.17",
+    "adminjs-drizzle": "^0.1.2",
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",

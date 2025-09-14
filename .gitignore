@@ -8,4 +8,5 @@ something.json
 migrations
 .vercel
 vercel.json
+.adminjs
 
