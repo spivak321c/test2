@@ -9,4 +9,5 @@ migrations
 .vercel
 vercel.json
 .adminjs
+yarn.lock
 
