@@ -61,6 +61,18 @@ app.listen(appConfig.port, () => {
 */
 
 
+import "dotenv/config";
+import express from "express";
+// import session from "express-session";
+// import connectRedis from "connect-redis";
+// import { createClient } from "redis";
+import { Pool } from "@neondatabase/serverless";
+import { registerRoutes } from "./routes/index.js"; // ✅ Add .js
+import { loggingMiddleware } from "./middleware/logging.js";
+import { config as appConfig } from "./config/index.js";
+import swaggerUi from "swagger-ui-express";
+import { specs } from "./docs/swagger.js";
+import { adminRouter } from "./admin/admin.js";
 
 
 
@@ -69,18 +81,17 @@ app.listen(appConfig.port, () => {
 
 
 
+// import "dotenv/config";  // <-- loads .env before any other module
 
-import "dotenv/config";  // <-- loads .env before any other module
 
-
-import express from "express"
-//import cors from "cors"
-import { registerRoutes } from "./routes/index"
-import { loggingMiddleware } from "./middleware/logging"
-import { config as appConfig } from "./config/index"
-import swaggerUi from 'swagger-ui-express';
-import { specs } from './docs/swagger';
-// import AdminJS from 'adminjs';
+// import express from "express"
+// //import cors from "cors"
+// import { registerRoutes } from "./routes/index"
+// import { loggingMiddleware } from "./middleware/logging"
+// import { config as appConfig } from "./config/index"
+// import swaggerUi from 'swagger-ui-express';
+// import { specs } from './docs/swagger';
+// // import AdminJS from 'adminjs';
 // import AdminJSExpress from '@adminjs/express';
 // import { admins } from "./models/admins";
 // import { categories } from "./models/category";
@@ -93,7 +104,7 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.use(express.raw({ type: "application/webhook+json" }))
 app.use(loggingMiddleware)
-import { adminRouter } from './admin/admin';  // New import
+//import { adminRouter } from './admin/admin';  // New import
 
 
 app.use('/admin', adminRouter);

@@ -1,6 +1,6 @@
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';  // Note: Use the non-scoped version if you have issues with @adminjs/express
-import { Database, Resource } from 'adminjs-drizzle/pg';  // ✅ PostgreSQL-specific import
+import { Database, Resource } from 'adminjs-drizzle/pg';  // 
 import bcrypt from 'bcrypt';  // For password comparison
 import { db } from '../config/database';  // Your Drizzle instance (with Neon Pool)
 import { admins } from '../models/admins';
@@ -26,6 +26,7 @@ const adminJs = new AdminJS({
   ],
   rootPath: '/admin',
   branding: { companyName: 'Your Merchant Admin' },
+ 
 });
 
 // Option 2: If you prefer database-level (uncomment if above doesn't fit)

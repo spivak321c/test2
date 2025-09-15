@@ -8,6 +8,5 @@ something.json
 migrations
 .vercel
 vercel.json
-.adminjs
 yarn.lock
 
