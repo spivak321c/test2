@@ -8,7 +8,7 @@ import {
   updateCategory,
   deleteCategory,
   addAttribute,
-} from '../controllers/category';
+} from '../controllers/category.js';
 
 const router = Router();
 router.post('/', createCategory);

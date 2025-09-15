@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsc",
+    "build": "tsc && npm run adminjs:bundle",
     "start": "node dist/index.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -17,7 +17,6 @@
     "experimentalSpecifierResolution": "node"
   },
   "dependencies": {
-    "@adminjs/cli": "^1.0.5",
     "@adminjs/express": "^6.1.1",
     "@neondatabase/serverless": "^0.10.4",
     "@vercel/node": "^5.3.22",
@@ -40,6 +39,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@adminjs/cli": "^1.0.5",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.10",

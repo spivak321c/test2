@@ -45,7 +45,7 @@ export function registerRoutes(app: Express) {  // Removed 'async' (no awaits in
 }
 */
 import type { Express } from "express"
-import adminRoutes from './admin';
+import adminRoutes from './admin.js';
 import categoryRoutes from "./category.js"
 import merchantRoutes from "./merchants.js"
 import settingsRoutes from "./settings.js"
