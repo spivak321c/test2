@@ -9,14 +9,15 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "seed": "tsx src/seed.ts"
+    "seed": "tsx src/seed.ts",
+    "adminjs:bundle": "ADMIN_JS_TMP_DIR=/tmp adminjs bundle"
   },
-  
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
   "dependencies": {
+    "@adminjs/cli": "^1.0.5",
     "@adminjs/express": "^6.1.1",
     "@neondatabase/serverless": "^0.10.4",
     "@vercel/node": "^5.3.22",

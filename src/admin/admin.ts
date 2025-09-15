@@ -11,6 +11,10 @@ import { categories } from '../models/category';
 import { config } from '../config/index';  // Your JWT config
 // Import other models as needed (e.g., import { orders } from '../models/order';)
 
+
+process.env.ADMIN_JS_TMP_DIR = process.env.ADMIN_JS_TMP_DIR || "/tmp";
+console.log("🔍 AdminJS bundle dir:", process.env.ADMIN_JS_TMP_DIR);
+
 // Register the adapter with AdminJS
 AdminJS.registerAdapter({ Database, Resource });
 
@@ -64,6 +68,14 @@ const authenticate = async (email: string, password: string) => {
     role: admin.role,  // e.g., 'admin' or 'editor'
   };
 };
+
+// const sessionOptions = {
+//   secret: config.jwt.secret,
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: { maxAge: 24 * 60 * 60 * 1000, secure: process.env.NODE_ENV === "production", httpOnly: true },
+// };
+
 
 // Build authenticated router (handles /admin/login, sessions via cookies)
 export const adminRouter = AdminJSExpress.buildAuthenticatedRouter(adminJs, {

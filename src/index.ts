@@ -123,7 +123,12 @@ export default app;
 // app.use(adminJs.options.rootPath, router);
 
 
-const port = appConfig.port
+// const port = appConfig.port
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`)
+// })
+
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : appConfig.port;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-})
+  console.log(`Server running on port ${port}`);
+});
