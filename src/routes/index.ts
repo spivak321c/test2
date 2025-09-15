@@ -51,11 +51,11 @@ import merchantRoutes from "./merchants.js"
 import settingsRoutes from "./settings.js"
 //import authRoutes from "./auth"
 import { requireAdmin } from "../middleware/auth.js"
-//import { loggingMiddleware } from "../middleware/logging.js"
+import { loggingMiddleware } from "../middleware/logging.js"
 //import { stripeWebhook } from "../utils/external.js"
 
 export function registerRoutes(app: Express) {
-  //app.use(loggingMiddleware)
+  app.use(loggingMiddleware)
 
   //app.use("/api/auth", authRoutes)
   app.use('/adminv', adminRoutes);

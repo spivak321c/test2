@@ -1,6 +1,6 @@
 // Request and audit logging middleware
 import { Request, Response, NextFunction } from 'express';
-import { log } from '../utils/logger';
+import { log } from '../utils/logger.js';
 
 // Logging middleware
 export const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
