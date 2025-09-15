@@ -1,0 +1,9 @@
+export declare const getAllApplications: () => Promise<any>;
+export declare const getPendingApplications: () => Promise<any>;
+export declare const approveApplication: (id: string, adminId: string) => Promise<any>;
+export declare const rejectApplication: (id: string, reason: string, adminId: string) => Promise<any>;
+export declare const requestMoreInfo: (id: string, message: string, adminId: string) => Promise<any>;
+export declare const getAllMerchants: () => Promise<any>;
+export declare const suspendMerchant: (id: string, reason: string, adminId: string) => Promise<any>;
+export declare const updateCommissionTier: (id: string, tier: string, adminId: string) => Promise<any>;
+//# sourceMappingURL=merchant_service.d.ts.map

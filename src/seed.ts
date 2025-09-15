@@ -1,10 +1,10 @@
 import { drizzle } from 'drizzle-orm/neon-serverless'; // Or neon-http if not switched
 import { Pool } from '@neondatabase/serverless';
 import { v4 as uuid } from 'uuid';
-import { merchantApplication } from './models/merchant_applications';
-import { merchants } from './models/merchant';
+import { merchantApplication } from './models/merchant_applications.js';
+import { merchants } from './models/merchant.js';
 import bcrypt from 'bcrypt';
-import { admins } from './models/admins';
+import { admins } from './models/admins.js';
 
 // if (!process.env.DATABASE_URL) {
 //   throw new Error('DATABASE_URL is not set');
