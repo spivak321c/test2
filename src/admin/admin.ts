@@ -2,13 +2,13 @@ import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';  // Note: Use the non-scoped version if you have issues with @adminjs/express
 import { Database, Resource } from 'adminjs-drizzle/pg';  // 
 import bcrypt from 'bcrypt';  // For password comparison
-import { db } from '../config/database';  // Your Drizzle instance (with Neon Pool)
-import { admins } from '../models/admins';
-import { merchants } from '../models/merchant';
-import { merchantApplication } from '../models/merchant_applications';
+import { db } from '../config/database.js';  // Your Drizzle instance (with Neon Pool)
+import { admins } from '../models/admins.js';
+import { merchants } from '../models/merchant.js';
+import { merchantApplication } from '../models/merchant_applications.js';
 import { eq } from 'drizzle-orm';
 import { categories } from '../models/category';
-import { config } from '../config/index';  // Your JWT config
+import { config } from '../config/index.js';  // Your JWT config
 // Import other models as needed (e.g., import { orders } from '../models/order';)
 
 
