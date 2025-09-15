@@ -18,9 +18,9 @@ import { neon } from '@neondatabase/serverless';
 //import { drizzle } from 'drizzle-orm/neon-http';
 import { drizzle } from 'drizzle-orm/neon-serverless'; // Use neon-serverless instead of neon-http
 import { Pool } from '@neondatabase/serverless';
-import { merchants } from '../models/merchant';
-import { merchantApplication } from '../models/merchant_applications';
-import { adminLogs,admins } from '../models/admins';
+import { merchants } from '../models/merchant.js';
+import { merchantApplication } from '../models/merchant_applications.js';
+import { adminLogs,admins } from '../models/admins.js';
 
 // Ensure DATABASE_URL is set in environment variables
 if (!process.env.DATABASE_URL) {
