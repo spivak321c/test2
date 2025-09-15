@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "target": "esnext",
-    "module": "esnext",
+    "module": "nodenext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types", "./types"],
