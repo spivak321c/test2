@@ -7,7 +7,7 @@ import { admins } from '../models/admins.js';
 import { merchants } from '../models/merchant.js';
 import { merchantApplication } from '../models/merchant_applications.js';
 import { eq } from 'drizzle-orm';
-import { categories } from '../models/category';
+import { categories } from '../models/category.js';
 import { config } from '../config/index.js';  // Your JWT config
 // Import other models as needed (e.g., import { orders } from '../models/order';)
 

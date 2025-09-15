@@ -67,7 +67,7 @@ import express from "express";
 // import connectRedis from "connect-redis";
 // import { createClient } from "redis";
 import { Pool } from "@neondatabase/serverless";
-import { registerRoutes } from "./routes/index.js"; // ✅ Add .js
+import { registerRoutes } from "./routes/index.js"; 
 import { loggingMiddleware } from "./middleware/logging.js";
 import { config as appConfig } from "./config/index.js";
 import swaggerUi from "swagger-ui-express";
