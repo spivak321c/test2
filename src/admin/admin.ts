@@ -12,6 +12,8 @@ import { config } from '../config/index.js';  // Your JWT config
 // Import other models as needed (e.g., import { orders } from '../models/order';)
 
 
+process.env.ADMIN_JS_SKIP_BUNDLE = "true"; // String "true"
+
 process.env.ADMIN_JS_TMP_DIR = process.env.ADMIN_JS_TMP_DIR || "/tmp";
 console.log("🔍 AdminJS bundle dir:", process.env.ADMIN_JS_TMP_DIR);
 

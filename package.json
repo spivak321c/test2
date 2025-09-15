@@ -4,13 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsc && npm run adminjs:bundle",
+    "build": "tsc && tsc-esm-fix --target dist",
     "start": "node dist/index.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "seed": "tsx src/seed.ts",
-    "adminjs:bundle": "ADMIN_JS_TMP_DIR=/tmp adminjs bundle"
+    "adminjs:bundle": "ADMIN_JS_TMP_DIR=/tmp npx adminjs-bundler --entry ./src/admin/admin.ts --out ./dist/adminjs-bundle --skip-bundle"
   },
   "ts-node": {
     "esm": true,
@@ -39,6 +39,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@adminjs/bundler": "^3.0.0",
     "@adminjs/cli": "^1.0.5",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^4.17.21",
@@ -50,6 +51,7 @@
     "@types/uuid": "^10.0.0",
     "drizzle-kit": "^0.31.0",
     "ts-node": "^10.9.2",
+    "tsc-esm-fix": "^3.1.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
