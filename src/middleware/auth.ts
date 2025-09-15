@@ -117,10 +117,10 @@ export const requireAdmin = async (
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { db } from '../config/database';
-import { admins } from '../models/admins';
+import { db } from '../config/database.js';
+import { admins } from '../models/admins.js';
 import { eq } from 'drizzle-orm';
-import { config } from '../config/index';
+import { config } from '../config/index.js';
 
 export const requireAdmin = async (
   req: Request,

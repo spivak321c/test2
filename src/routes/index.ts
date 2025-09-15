@@ -51,11 +51,11 @@ import merchantRoutes from "./merchants.js"
 import settingsRoutes from "./settings.js"
 //import authRoutes from "./auth"
 import { requireAdmin } from "../middleware/auth.js"
-import { loggingMiddleware } from "../middleware/logging.js"
-import { stripeWebhook } from "../utils/external.js"
+//import { loggingMiddleware } from "../middleware/logging.js"
+//import { stripeWebhook } from "../utils/external.js"
 
 export function registerRoutes(app: Express) {
-  app.use(loggingMiddleware)
+  //app.use(loggingMiddleware)
 
   //app.use("/api/auth", authRoutes)
   app.use('/adminv', adminRoutes);
@@ -63,7 +63,7 @@ export function registerRoutes(app: Express) {
   app.use("/api/admin/merchants", requireAdmin, merchantRoutes)
   app.use("/api/admin/settings", requireAdmin, settingsRoutes)
 
-  app.post("/api/webhooks/stripe", stripeWebhook)
+  //app.post("/api/webhooks/stripe", stripeWebhook)
 
   app.get("/health", (req, res) => {
     res.json({
