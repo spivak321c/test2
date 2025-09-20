@@ -19,6 +19,9 @@ RUN npm install
 # Copy the rest of the codebase
 COPY . .
 
+# Copy .env.example to .env (for development or fallback)
+RUN cp .env || touch .env
+
 # Build the TypeScript code
 RUN npm run build
 
@@ -32,7 +35,7 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/.env ./.env  # Copy .env for env vars (use volumes/secrets in prod)
+COPY --from=builder /app/.env ./.env  # Copy the .env file created above
 
 # Install only production dependencies to slim down the image
 RUN npm install --only=production
