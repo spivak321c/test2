@@ -19,9 +19,6 @@ RUN npm install
 # Copy the rest of the codebase
 COPY . .
 
-# Copy .env.example to .env (for development or fallback)
-RUN cp .env || touch .env
-
 # Build the TypeScript code
 RUN npm run build
 
@@ -35,14 +32,13 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/.env ./.env  # Copy the .env file created above
+# Removed: COPY --from=builder /app/.env ./.env  # Use volumes/secrets in prod instead
 
 # Install only production dependencies to slim down the image
 RUN npm install --only=production
 
-# Expose the port (from .env or default 3000)
-EXPOSE ${PORT:-3000}
+# Expose the port (default 3000; override at runtime if needed)
+EXPOSE 3000
 
 # Start the server
 CMD ["npm", "start"]
-
