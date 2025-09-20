@@ -68,11 +68,13 @@ import express from "express";
 // import { createClient } from "redis";
 import { Pool } from "@neondatabase/serverless";
 import { registerRoutes } from "./routes/index.js"; 
-import { loggingMiddleware } from "./middleware/logging.js";
+//import { loggingMiddleware } from "./middleware/logging.js";
 import { config as appConfig } from "./config/index.js";
 import swaggerUi from "swagger-ui-express";
 import { specs } from "./docs/swagger.js";
 import { adminRouter } from "./admin/admin.js";
+import expressWinston from "express-winston";
+import { logger } from "./utils/logger.js";  
 
 
 
@@ -99,11 +101,23 @@ import { adminRouter } from "./admin/admin.js";
 
 const app = express()
 
+
+
+// 📌 Request logging middleware
+app.use(
+  expressWinston.logger({
+    winstonInstance: logger,
+    meta: false, // no full metadata (keeps it clean)
+    msg: "HTTP {{req.method}} {{req.url}} → {{res.statusCode}}",
+    colorize: true,
+  })
+);
+
 //app.use(cors())
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 //app.use(express.raw({ type: "application/webhook+json" }))
-app.use(loggingMiddleware)
+//app.use(loggingMiddleware)
 //import { adminRouter } from './admin/admin';  // New import
 
 
@@ -113,6 +127,15 @@ app.use('/admin', adminRouter);
 app.get('/test-admin', (req, res) => res.json({ message: 'Admin route base is working!' }));
 
 registerRoutes(app)
+
+app.use(
+  expressWinston.errorLogger({
+    winstonInstance: logger,
+  })
+);
+
+
+
 export default app;
 
 // const adminJs = new AdminJS({
