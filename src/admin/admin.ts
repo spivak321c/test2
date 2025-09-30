@@ -9,7 +9,10 @@ import { merchantApplication } from '../models/merchant_applications.js';
 import { eq } from 'drizzle-orm';
 import { categories } from '../models/category.js';
 import { config } from '../config/index.js';  // Your JWT config
-// Import other models as needed (e.g., import { orders } from '../models/order';)
+ import { orders } from '../models/order';import { orderMerchantSplits } from '../models/order_merchant_split.js';
+import { payouts } from '../models/payout.js';
+import { merchantBankDetails } from '../models/bank_details.js';
+)
 
 
 //process.env.ADMIN_JS_SKIP_BUNDLE = "true"; // String "true"
@@ -28,7 +31,10 @@ const adminJs = new AdminJS({
     { resource: { table: merchants, db }, options: { properties: { password: { isVisible: true } } } },
     { resource: { table: merchantApplication, db } },
     { resource: { table: categories, db } },
-    // Add more: { resource: { table: orders, db } },
+   { resource: { table: orders, db } },
+   { resource: { table: orderMerchantSplits, db } },
+    { resource: { table: payouts, db }, options: { actions: { process: { actionType: 'record', handler: async (req, res, ctx) => { /* Call processPayout */ } } } } },
+    { resource: { table: merchantBankDetails, db }, options: { properties: { accountNumber: { isVisible: { list: false, show: true } } } } },  // Hide sensitive in lists
   ],
   rootPath: '/admin',
   branding: { companyName: 'Your Merchant Admin' },

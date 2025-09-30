@@ -1,20 +1,26 @@
-// Payout schema
-import { pgTable, varchar, decimal, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  uuid,
+  decimal,
+  varchar,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { merchants } from "./merchant";
 
-export const payouts = pgTable('payouts', {
-  id: varchar('id').primaryKey(),
-  merchantId: varchar('merchant_id').notNull(),
-  amount: decimal('amount').notNull(),
-  status: text('status').notNull().default('pending'),
-  transferId: text('transfer_id'), // Stripe transfer ID
-  createdAt: timestamp('created_at').defaultNow(),
+export const payouts = pgTable("payouts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  merchantId: uuid("merchant_id").notNull(),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  status: varchar("status", { length: 20 }).notNull().default("Pending"),
+  payoutAccountId: varchar("payout_account_id", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-
-// Add relation
-// export const payoutRelations = relations(payouts, ({ one }) => ({
-//   merchant: one(merchants, {
-//     fields: [payouts.merchantId],
-//     references: [merchants.id],
-//   }),
-// }));
+export const payoutRelations = relations(payouts, ({ one }) => ({
+  merchant: one(merchants, {
+    fields: [payouts.merchantId],
+    references: [merchants.id],
+  }),
+}));

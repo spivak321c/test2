@@ -52,3 +52,97 @@ export const runPayout = async (adminId?: string) => {
   return results;
 };
 */
+
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { eq, and, lt, sum } from "drizzle-orm";
+import { db } from "../config/database.js";
+import { payouts } from "../models/payout.js";
+import { orderMerchantSplits } from "../models/order_merchant_split.js";
+import { merchants } from "../models/merchant.js";
+import { config } from "../config/index.js";
+const { Paystack } = require("@paystack/paystack-sdk");
+
+const paystack = new Paystack(config.paystack.secretKey);
+
+// Process pending payout
+export const processPayout = async (payoutId: string, adminId: string) => {
+  return await db.transaction(async (tx) => {
+    const [payout] = await tx
+      .select()
+      .from(payouts)
+      .where(eq(payouts.id, payoutId));
+    if (!payout || payout.status !== "pending")
+      throw new Error("Invalid payout");
+
+    // Verify eligible amount from splits (cross-check)
+    const eligibleAmount = await tx
+      .select({ total: sum(orderMerchantSplits.amountDue) })
+      .from(orderMerchantSplits)
+      .where(
+        and(
+          eq(orderMerchantSplits.merchantId, payout.merchantId),
+          eq(orderMerchantSplits.status, "payout_requested"),
+          lt(orderMerchantSplits.holdUntil, new Date())
+        )
+      );
+    if (Number(eligibleAmount[0].total) !== Number(payout.amount))
+      throw new Error("Amount mismatch");
+
+    const [merchant] = await tx
+      .select()
+      .from(merchants)
+      .where(eq(merchants.id, payout.merchantId));
+    if (!merchant.recipientCode) throw new Error("No recipient set");
+
+    // Initiate transfer
+    const transfer = await paystack.transfer.create({
+      source: "balance",
+      amount: Number(payout.amount) * 100, // Kobo
+      recipient: merchant.recipientCode,
+      reference: `payout_${payout.id}`,
+      reason: "Merchant Payout",
+    });
+
+    // Update payout
+    await tx
+      .update(payouts)
+      .set({
+        status: "processing",
+        paystackTransferId: transfer.data.transfer_code, // Not ID, code for verification
+      })
+      .where(eq(payouts.id, payoutId));
+
+    // Log (use your admin_logs)
+    // await createAdminLog({ adminId, action: 'PROCESS_PAYOUT', targetType: 'payout', targetId: payoutId });
+
+    return payout;
+  });
+};
+
+// Handle webhook (separate function for route)
+export const handleTransferWebhook = async (event: any) => {
+  if (event.event === "transfer.success") {
+    const ref = event.data.reference;
+    const [payout] = await db
+      .select()
+      .from(payouts)
+      .where(eq(payouts.paystackTransferId, event.data.transfer_code));
+    if (payout) {
+      await db
+        .update(payouts)
+        .set({ status: "completed" })
+        .where(eq(payouts.id, payout.id));
+      await db
+        .update(orderMerchantSplits)
+        .set({ status: "paid" })
+        .where(
+          and(
+            eq(orderMerchantSplits.merchantId, payout.merchantId),
+            eq(orderMerchantSplits.status, "payout_requested")
+          )
+        );
+    }
+  } else if (event.event === "transfer.failed") {
+    // Update to 'failed', notify admin
+  }
+};

@@ -5,11 +5,7 @@
 //     // Add DB config if switching from in-memory
 //   };
 
-
 // Placeholder config (original has none; add env vars if needed)
-
-
-
 
 // import dotenv from 'dotenv';
 
@@ -29,10 +25,6 @@
 // };
 
 // console.log('Loaded PORT:', process.env.PORT); // Debug
-
-
-
-
 
 /*
 import dotenv from "dotenv"
@@ -69,12 +61,20 @@ export const config = {
 }
 */
 
-
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const requiredEnv = ["DATABASE_URL", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "SMTP_FROM", "JWT_SECRET"];
+const requiredEnv = [
+  "DATABASE_URL",
+  "SMTP_HOST",
+  "SMTP_PORT",
+  "SMTP_USER",
+  "SMTP_PASS",
+  "SMTP_FROM",
+  "JWT_SECRET",
+  "PAYSTACK_SECRET_KEY",
+];
 
 for (const env of requiredEnv) {
   if (!process.env[env]) {
@@ -96,5 +96,8 @@ export const config = {
     pass: process.env.SMTP_PASS as string,
     from: process.env.SMTP_FROM as string,
     secure: process.env.SMTP_SECURE === "true",
+  },
+  paystack: {
+    secretKey: process.env.PAYSTACK_SECRET_KEY!,
   },
 };
