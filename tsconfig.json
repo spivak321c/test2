@@ -1,20 +1,51 @@
 {
   "compilerOptions": {
-    "strict": true,
+   
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "esnext",
-    "module": "esnext",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+   
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+
+ 
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "preserve",
+    "allowJs": true,
+    "isolatedModules": true,
+    "noEmit": false,            
+    "plugins": [{ "name": "next" }],
+
+   
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+
+   
+    "incremental": true,
+
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*", "types/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".next"
+  ],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }

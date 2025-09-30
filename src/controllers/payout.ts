@@ -1,38 +1,53 @@
-// Controllers for payout run management
+import type { Request, Response } from "express";
+import * as payoutService from "../services/payout_service.js";
 
-import { Request, Response } from "express";
-import * as payoutService from "../services/payout_service";
-import { processPayout } from "../services/payout_service";
-
-export const processPayoutController = async (req, res) => {
-  const { payoutId } = req.params;
-  const adminId = req.user.id; // From auth middleware
+export const getAllPayouts = async (req: Request, res: Response) => {
   try {
-    const payout = await processPayout(payoutId, adminId);
-    res.json(payout);
-  } catch (err) {
-    res.status(400).json({ error: err });
+    const { merchantId, status, limit } = req.query;
+
+    const payouts = await payoutService.getAllPayouts({
+      merchantId: merchantId as string,
+      status: status as string,
+      limit: limit ? Number.parseInt(limit as string) : undefined,
+    });
+
+    res.json({ payouts });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 };
-/*
-// Get all payouts
-export const getPayouts = async (req: Request, res: Response) => {
-  // Fetch payout history
-  const payouts = await payoutService.getAllPayouts();
-  res.json(payouts);
+
+export const getMerchantPayoutSummary = async (req: Request, res: Response) => {
+  try {
+    const { merchantId } = req.params;
+    const summary = await payoutService.getMerchantPayoutSummary(merchantId);
+    res.json(summary);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-// Get payouts for a merchant
-export const getMerchantPayouts = async (req: Request, res: Response) => {
-  // Fetch payouts for specific merchant
-  const payouts = await payoutService.getMerchantPayouts(req.params.merchantId);
-  res.json(payouts);
+export const aggregatePayouts = async (req: Request, res: Response) => {
+  try {
+    const results = await payoutService.aggregateEligiblePayouts();
+    res.json({
+      message: "Payout aggregation completed",
+      results,
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-// Trigger manual payout run
-export const triggerPayout = async (req: Request, res: Response) => {
-  // Manually run payout aggregation and transfers, log financial action
-  const results = await payoutService.runPayout(req.user.id);
-  res.json(results);
+export const processPayout = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await payoutService.processPayout(id, req.user!.id);
+    res.json({
+      message: "Payout processing initiated",
+      result,
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
 };
-*/

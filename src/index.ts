@@ -35,8 +35,6 @@
 //   console.log(`Server on port ${config.port}`);
 // });
 
-
-
 /*
 import { config } from 'dotenv';
 config(); // Load .env first
@@ -60,31 +58,22 @@ app.listen(appConfig.port, () => {
 });
 */
 
-
 import "dotenv/config";
 import express from "express";
 // import session from "express-session";
 // import connectRedis from "connect-redis";
 // import { createClient } from "redis";
 import { Pool } from "@neondatabase/serverless";
-import { registerRoutes } from "./routes/index.js"; 
+import { registerRoutes } from "./routes/index.js";
 //import { loggingMiddleware } from "./middleware/logging.js";
 import { config as appConfig } from "./config/index.js";
 import swaggerUi from "swagger-ui-express";
 import { specs } from "./docs/swagger.js";
 import { adminRouter } from "./admin/admin.js";
 import expressWinston from "express-winston";
-import { logger } from "./utils/logger.js";  
-
-
-
-
-
-
-
+import { logger } from "./utils/logger.js";
 
 // import "dotenv/config";  // <-- loads .env before any other module
-
 
 // import express from "express"
 // //import cors from "cors"
@@ -99,10 +88,9 @@ import { logger } from "./utils/logger.js";
 // import { categories } from "./models/category";
 // import { merchants } from "./models/merchant";
 
-const app = express()
+const app = express();
 
-
-
+app.use("/webhook", express.raw({ type: "application/json" }), webhookRouter);
 // 📌 Request logging middleware
 app.use(
   expressWinston.logger({
@@ -114,27 +102,26 @@ app.use(
 );
 
 //app.use(cors())
-app.use(express.json())
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use(express.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 //app.use(express.raw({ type: "application/webhook+json" }))
 //app.use(loggingMiddleware)
 //import { adminRouter } from './admin/admin';  // New import
 
-
-app.use('/admin', adminRouter);
+app.use("/admin", adminRouter);
 
 // TEST ENDPOINT: Add this temporarily to confirm Express routing works
-app.get('/test-admin', (req, res) => res.json({ message: 'Admin route base is working!' }));
+app.get("/test-admin", (req, res) =>
+  res.json({ message: "Admin route base is working!" })
+);
 
-registerRoutes(app)
+registerRoutes(app);
 
 app.use(
   expressWinston.errorLogger({
     winstonInstance: logger,
   })
 );
-
-
 
 export default app;
 
@@ -145,7 +132,6 @@ export default app;
 // const router = AdminJSExpress.buildRouter(adminJs);
 // app.use(adminJs.options.rootPath, router);
 
-
 // const port = appConfig.port
 // app.listen(port, () => {
 //   console.log(`Server running on port ${port}`)
@@ -155,3 +141,17 @@ const port = process.env.PORT ? parseInt(process.env.PORT, 10) : appConfig.port;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+if (
+  appConfig.env === "production" ||
+  process.env.ENABLE_SCHEDULERS === "true"
+) {
+  startPayoutSchedulers();
+  logger.info("Payout schedulers enabled");
+} else {
+  logger.info(
+    "Payout schedulers disabled (set ENABLE_SCHEDULERS=true to enable)"
+  );
+}
+
+export default app;
