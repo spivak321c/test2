@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-   
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -9,43 +8,30 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-
-   
     "rootDir": "./src",
     "outDir": "./dist",
     "typeRoots": ["./node_modules/@types", "./src/types"],
-
- 
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "jsx": "preserve",
+    "lib": ["esnext"],
     "allowJs": true,
     "isolatedModules": true,
-    "noEmit": false,            
-    "plugins": [{ "name": "next" }],
-
-   
+    "noEmit": false,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-
-   
     "incremental": true,
-
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "src/**/*",
-    ".next/types/**/*.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    ".next"
+    "dist"
   ],
   "ts-node": {
+    "esm": true,
     "require": ["tsconfig-paths/register"]
   }
 }

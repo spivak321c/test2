@@ -17,6 +17,7 @@ export const admins = pgTable("admins", {
   role: text("role").notNull().default("admin"),
   email: text("email").notNull().unique(),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt:timestamp("created_at").defaultNow()
 });
 
 export const adminLogs = pgTable("admin_logs", {

@@ -72,7 +72,8 @@ import { specs } from "./docs/swagger.js";
 import { adminRouter } from "./admin/admin.js";
 import expressWinston from "express-winston";
 import { logger } from "./utils/logger.js";
-
+import webhookRouter from "./routes/webhook.js"
+import { startPayoutSchedulers } from "./jobs/payout-scheduler.js"
 // import "dotenv/config";  // <-- loads .env before any other module
 
 // import express from "express"
@@ -123,7 +124,7 @@ app.use(
   })
 );
 
-export default app;
+// export default app;
 
 // const adminJs = new AdminJS({
 //   resources: [merchants, admins, categories ],
