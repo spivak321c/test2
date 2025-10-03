@@ -86,7 +86,7 @@ export const aggregateEligiblePayouts = async () => {
     throw error;
   }
 };
-
+/*
 export const processPayout = async (payoutId: string, adminId?: string) => {
   return await db.transaction(async (tx) => {
     const [payout] = await tx
@@ -149,6 +149,51 @@ export const processPayout = async (payoutId: string, adminId?: string) => {
     );
 
     // Send notification email
+    await sendPayoutNotificationEmail(
+      merchant.workEmail,
+      merchant.storeName,
+      Number(payout.amount)
+    );
+
+    return { payout, transfer: transfer.data };
+  });
+};
+*/
+
+export const processPayout = async (payoutId: string, adminId?: string) => {
+  return await db.transaction(async (tx) => {
+    const [payout] = await tx
+      .select()
+      .from(payouts)
+      .where(eq(payouts.id, payoutId));
+
+    if (!payout) throw new Error("Payout not found");
+    if (payout.status !== "pending")
+      throw new Error(`Payout status is ${payout.status}`);
+
+    const [merchant] = await tx
+      .select()
+      .from(merchants)
+      .where(eq(merchants.id, payout.merchantId));
+
+    // Initiate Paystack transfer
+    const transfer = await paystack.transfer.create({
+      source: "balance",
+      amount: Math.round(Number(payout.amount) * 100),
+      recipient: merchant.recipientCode,
+      reference: `payout_${payout.id}`,
+      reason: `Payout for ${merchant.storeName}`,
+    });
+
+    await tx
+      .update(payouts)
+      .set({
+        status: "processing",
+        paystackTransferId: transfer.data.transfer_code,
+        updatedAt: new Date(),
+      })
+      .where(eq(payouts.id, payoutId));
+
     await sendPayoutNotificationEmail(
       merchant.workEmail,
       merchant.storeName,

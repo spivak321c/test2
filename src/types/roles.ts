@@ -38,6 +38,7 @@ export enum Permission {
   // System permissions
   VIEW_LOGS = "view_logs",
   MANAGE_SETTINGS = "manage_settings",
+  MANAGE_ALL_RESOURCES = "manage_all_resources",
 }
 
 export const RolePermissions: Record<AdminRole, Permission[]> = {
@@ -55,6 +56,7 @@ export const RolePermissions: Record<AdminRole, Permission[]> = {
     Permission.EDIT_ORDERS,
     Permission.REFUND_ORDERS,
     Permission.VIEW_LOGS,
+    Permission.MANAGE_ALL_RESOURCES,
   ],
   [AdminRole.EDITOR]: [
     Permission.VIEW_MERCHANTS,

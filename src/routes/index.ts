@@ -44,13 +44,14 @@ export function registerRoutes(app: Express) {  // Removed 'async' (no awaits in
   return server;
 }
 */
-import type { Express } from "express"
-import adminRoutes from './admin.js';
-import categoryRoutes from "./category.js"
-import merchantRoutes from "./merchants.js"
-import settingsRoutes from "./settings.js"
+import type { Express } from "express";
+import adminRoutes from "./admin.js";
+import categoryRoutes from "./category.js";
+import merchantRoutes from "./merchants.js";
+import settingsRoutes from "./settings.js";
 //import authRoutes from "./auth"
-import { requireAdmin } from "../middleware/auth.js"
+import { requireAdmin } from "../middleware/auth.js";
+import genericAdminRouter from "./generic_admin.js";
 //import { loggingMiddleware } from "../middleware/logging.js"
 //import { stripeWebhook } from "../utils/external.js"
 
@@ -58,10 +59,12 @@ export function registerRoutes(app: Express) {
   //app.use(loggingMiddleware)
 
   //app.use("/api/auth", authRoutes)
-  app.use('/adminv', adminRoutes);
-  app.use("/api/admin/categories", requireAdmin, categoryRoutes)
-  app.use("/api/admin/merchants", requireAdmin, merchantRoutes)
-  app.use("/api/admin/settings", requireAdmin, settingsRoutes)
+  app.use("/adminv", adminRoutes);
+  app.use("/api/categories", requireAdmin, categoryRoutes);
+  app.use("/api/merchants", requireAdmin, merchantRoutes);
+  app.use("/api/settings", requireAdmin, settingsRoutes);
+
+router.use(requireAdmin, requireRole(AdminRole.SUPER_ADMIN)); // Mounts /api/admin/:model/...
 
   //app.post("/api/webhooks/stripe", stripeWebhook)
 
@@ -70,8 +73,8 @@ export function registerRoutes(app: Express) {
       status: "ok",
       timestamp: new Date().toISOString(),
       version: "1.0.0",
-    })
-  })
+    });
+  });
 
   app.get("/api", (req, res) => {
     res.json({
@@ -85,10 +88,14 @@ export function registerRoutes(app: Express) {
         },
         merchants: {
           "GET /api/admin/merchants/applications": "Get all applications",
-          "GET /api/admin/merchants/applications/pending": "Get pending applications",
-          "POST /api/admin/merchants/applications/:id/approve": "Approve application",
-          "POST /api/admin/merchants/applications/:id/reject": "Reject application",
-          "POST /api/admin/merchants/applications/:id/more-info": "Request more info",
+          "GET /api/admin/merchants/applications/pending":
+            "Get pending applications",
+          "POST /api/admin/merchants/applications/:id/approve":
+            "Approve application",
+          "POST /api/admin/merchants/applications/:id/reject":
+            "Reject application",
+          "POST /api/admin/merchants/applications/:id/more-info":
+            "Request more info",
           "GET /api/admin/merchants": "Get all merchants",
           "POST /api/admin/merchants/:id/suspend": "Suspend merchant",
           "PUT /api/admin/merchants/:id/commission": "Update commission tier",
@@ -107,18 +114,18 @@ export function registerRoutes(app: Express) {
         //   "POST /api/webhooks/stripe": "Stripe webhook handler",
         // },
       },
-    })
-  })
+    });
+  });
 
   app.use((err: any, req: any, res: any, next: any) => {
-    console.error("Error:", err)
+    console.error("Error:", err);
     res.status(500).json({
       message: "Internal Server Error",
       ...(process.env.NODE_ENV === "development" && { error: err.message }),
-    })
-  })
+    });
+  });
 
   app.use("*", (req, res) => {
-    res.status(404).json({ message: "Endpoint not found" })
-  })
+    res.status(404).json({ message: "Endpoint not found" });
+  });
 }

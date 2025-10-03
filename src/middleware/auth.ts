@@ -4,6 +4,19 @@ import { db } from "../config/database.js";
 import { admins } from "../models/admins.js";
 import { eq } from "drizzle-orm";
 import { config } from "../config/index.js";
+//import { AdminRole } from "@/types/roles.js";
+import { AdminRole, hasPermission } from "../types/roles"; // Add this import
+
+export const requireRole = (requiredRole: AdminRole) => 
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    if (req.user.role !== requiredRole) { // Or use hasPermission if needed
+      return res.status(403).json({ message: `Requires ${requiredRole} role` });
+    }
+    next();
+  };
 
 export const requireAdmin = async (
   req: Request,
@@ -38,7 +51,7 @@ export const requireAdmin = async (
     // Attach admin info to request
     req.user = {
       id: admin.id,
-      role: admin.role,
+      role: admin.role as AdminRole, // Cast to enum
       email: admin.email,
       username: admin.username,
     };

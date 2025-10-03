@@ -20,7 +20,23 @@ IGNORE_DIRS = {
     "dist",
     "build",
     "test-ledger",
+    "src/public"
+    "src/admin",
+    "admin",
+    #"config",
+    #"controllers",
+    "src/docs",
+    #"jobs",
+    #"middleware",
+    #"models",
+    #"repositories",
+    #"routes",
+    #"services",
+    "tests",
+    #"types",
+    #"utils"
     "public"
+
 }
 IGNORE_FILES = {
     ".DS_Store",
@@ -45,6 +61,7 @@ IGNORE_FILES = {
     "LICENSE",
     "pnpm-lock.yaml",
     "SETUP.md",
+    "seed.db"
 }
 
 

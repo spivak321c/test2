@@ -124,6 +124,10 @@ import { config } from "../config";
 import { merchantBankDetails } from "../models/bank_details";
 const { Paystack } = require("@paystack/paystack-sdk");
 const paystack = new Paystack(config.paystack.secretKey);
+interface MerchantService {
+  getAllMerchants?: (filters?: Record<string, any>) => Promise<any>;
+  // Add other methods
+}
 
 // Get all applications
 export const getAllApplications = async () => repo.getAllApplications();
